@@ -102,10 +102,58 @@ body{background:var(--bg);display:flex;align-items:center;justify-content:center
 @keyframes swing{from{transform:rotate(-5deg)}to{transform:rotate(5deg)}}
 
 /* crowd */
-.crowd{position:absolute;left:0;right:0;bottom:0;height:30%;animation:crowd var(--dur) ease-in-out infinite}
-@keyframes crowd{0%,20%{transform:none}55%,100%{transform:translateY(8%) scale(1.06)}}
-.person{position:absolute;bottom:0;transform-origin:50% 100%;animation:dance 1.1s ease-in-out infinite alternate}
-@keyframes dance{from{transform:translateY(0) rotate(-3deg)}to{transform:translateY(-4%) rotate(3deg)}}
+.crowd{position:absolute;left:0;right:0;bottom:0;height:36%;transform-origin:50% 100%;animation:crowd var(--dur) ease-in-out infinite}
+@keyframes crowd{0%,20%{transform:none}55%,100%{transform:translateY(16%) scale(1.04)}}
+.person{position:absolute}
+.person svg{width:100%;height:100%;overflow:visible}
+.person.back{filter:saturate(.8) brightness(.88)}
+.shadow{fill:#3d1f0a;opacity:.28}
+
+/* ---- rigged dancers: each limb is a <g> rotating around its joint ---- */
+.person .fig,.person .upper,.person .skirt,.person .head,.person .arm,.person .fore{animation-iteration-count:infinite;animation-timing-function:ease-in-out;animation-duration:var(--beat,1.6s);animation-delay:var(--off,0s)}
+.fig{animation-name:bounce}
+@keyframes bounce{0%,50%,100%{transform:translate(0,0)}25%{transform:translate(-3px,-5px)}75%{transform:translate(3px,-5px)}}
+.upper{animation-name:sway}
+@keyframes sway{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+.skirt{animation-name:swirl}
+@keyframes swirl{0%,100%{transform:skewX(9deg)}50%{transform:skewX(-9deg)}}
+.head{animation-name:tilt}
+@keyframes tilt{0%,100%{transform:rotate(9deg)}50%{transform:rotate(-9deg)}}
+
+/* garba: one hand high, the other bent across, then switch */
+.garba .arm.L{animation-name:gaL}.garba .fore.L{animation-name:gfL}
+.garba .arm.R{animation-name:gaR}.garba .fore.R{animation-name:gfR}
+@keyframes gaL{0%,100%{transform:rotate(155deg)}50%{transform:rotate(25deg)}}
+@keyframes gfL{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(-95deg)}}
+@keyframes gaR{0%,100%{transform:rotate(-25deg)}50%{transform:rotate(-155deg)}}
+@keyframes gfR{0%,100%{transform:rotate(95deg)}50%{transform:rotate(25deg)}}
+
+/* clap: hands meet at chest twice per beat */
+.clap .arm.L{animation-name:caL}.clap .fore.L{animation-name:cfL}
+.clap .arm.R{animation-name:caR}.clap .fore.R{animation-name:cfR}
+@keyframes caL{0%,50%,100%{transform:rotate(38deg)}25%,75%{transform:rotate(62deg)}}
+@keyframes cfL{0%,50%,100%{transform:rotate(-142deg)}25%,75%{transform:rotate(-105deg)}}
+@keyframes caR{0%,50%,100%{transform:rotate(-38deg)}25%,75%{transform:rotate(-62deg)}}
+@keyframes cfR{0%,50%,100%{transform:rotate(142deg)}25%,75%{transform:rotate(105deg)}}
+
+/* bhangra: both arms up, shoulders pumping */
+.bhangra .arm.L{animation-name:baL}.bhangra .fore.L{animation-name:bfL}
+.bhangra .arm.R{animation-name:baR}.bhangra .fore.R{animation-name:bfR}
+@keyframes baL{0%,50%,100%{transform:rotate(150deg)}25%,75%{transform:rotate(120deg)}}
+@keyframes bfL{0%,50%,100%{transform:rotate(-15deg)}25%,75%{transform:rotate(-55deg)}}
+@keyframes baR{0%,50%,100%{transform:rotate(-120deg)}25%,75%{transform:rotate(-150deg)}}
+@keyframes bfR{0%,50%,100%{transform:rotate(55deg)}25%,75%{transform:rotate(15deg)}}
+
+/* dhol: quick alternating strikes */
+.dhol{--beat:.9s}
+.dhol .upper{animation-name:swaySmall}
+@keyframes swaySmall{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}
+.dhol .arm.L{animation-name:daL}.dhol .fore.L{animation-name:dfL}
+.dhol .arm.R{animation-name:daR}.dhol .fore.R{animation-name:dfR}
+@keyframes daL{0%,100%{transform:rotate(20deg)}25%{transform:rotate(45deg)}50%{transform:rotate(20deg)}}
+@keyframes dfL{0%,100%{transform:rotate(-60deg)}25%{transform:rotate(-125deg)}50%{transform:rotate(-60deg)}}
+@keyframes daR{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(-20deg)}75%{transform:rotate(-45deg)}}
+@keyframes dfR{0%,100%{transform:rotate(60deg)}50%{transform:rotate(60deg)}75%{transform:rotate(125deg)}}
 .floor{position:absolute;left:0;right:0;bottom:0;height:20%;background:linear-gradient(180deg,#c88a4a,#8a5226);
   background-image:repeating-linear-gradient(90deg,#0000 0 12.5%,#0002 12.5% calc(12.5% + 1px)),linear-gradient(180deg,#d39656,#8a5226)}
 
@@ -124,10 +172,10 @@ body{background:var(--bg);display:flex;align-items:center;justify-content:center
 .env{position:absolute;top:2.5%;right:3%;width:11%;aspect-ratio:1.35;background:#fdf6ea;border-radius:3px;box-shadow:0 2px 6px #0004;z-index:5}
 .env::before{content:"";position:absolute;inset:0;background:linear-gradient(155deg,transparent 49%,#e7d6bd 50% 52%,transparent 53%),linear-gradient(-155deg,transparent 49%,#e7d6bd 50% 52%,transparent 53%)}
 .env::after{content:"♥";position:absolute;inset:0;display:grid;place-items:center;color:#e0303f;font-size:4.5cqw}
-.ctrl{position:absolute;left:4%;bottom:2.5%;z-index:6;display:flex;gap:8px}
+.ctrl{position:absolute;left:3%;top:2.5%;z-index:6;display:flex;gap:8px}
 .ctrl button{width:9cqw;height:9cqw;border:0;border-radius:50%;background:#0006;color:#fff;font-size:4cqw;cursor:pointer;backdrop-filter:blur(4px)}
 .stage.paused *{animation-play-state:paused!important}
-@media (prefers-reduced-motion:reduce){.petal,.person,.lantern{animation:none}}
+@media (prefers-reduced-motion:reduce){.petal,.person *,.lantern{animation:none!important}}
 </style>
 </head>
 <body>
@@ -258,27 +306,120 @@ body{background:var(--bg);display:flex;align-items:center;justify-content:center
     arch.appendChild(m);
   }
 
-  // --- dancing crowd (simple stylised figures) ---
+  // --- dancing crowd: rigged SVG characters (limbs rotate at shoulder/elbow) ---
   const crowd = $('crowd');
-  const outfits = ['#1e7f8c','#e8a21c','#c9372c','#f2c14e','#2f5d9a','#e46a2e','#8a2a6b','#f0e2c0','#3a8f5a'];
-  const people = [
-    {x:2,h:78,drum:true},{x:14,h:66},{x:24,h:72},{x:34,h:62},{x:44,h:70},{x:54,h:64},{x:63,h:72},{x:73,h:66},{x:84,h:78,drum:true}
+  const GOLD = '#e9b949';
+  const face = (skin, hair, female, beard) => `
+      <g class="head" style="transform-origin:50px 54px">
+        ${female ? `<circle cx="50" cy="32" r="14" fill="${hair}"/><circle cx="63" cy="27" r="7.5" fill="${hair}"/>
+          <circle cx="66" cy="22" r="2.4" fill="#fff"/><circle cx="68.5" cy="26" r="2.4" fill="#fff"/><circle cx="67" cy="30.5" r="2.4" fill="#fff"/>` : ''}
+        <rect x="46" y="46" width="8" height="12" rx="3" fill="${skin}"/>
+        <ellipse cx="50" cy="38" rx="11" ry="13" fill="${skin}"/>
+        <ellipse cx="38.6" cy="39" rx="2" ry="3" fill="${skin}"/><ellipse cx="61.4" cy="39" rx="2" ry="3" fill="${skin}"/>
+        ${female
+          ? `<path d="M38.5 38 Q38 22 50 22 Q62 22 61.5 38 Q60 28 52 27 L50 30 L48 27 Q40 28 38.5 38Z" fill="${hair}"/>
+             <circle cx="39" cy="44" r="1.8" fill="${GOLD}"/><circle cx="61" cy="44" r="1.8" fill="${GOLD}"/>
+             <circle cx="50" cy="32.5" r="1" fill="#c0121e"/>`
+          : `<path d="M38.5 37 Q37 20 50 20 Q63 20 61.5 37 Q61 27 50 27.5 Q41 27 38.5 37Z" fill="${hair}"/>`}
+        <path d="M43 35 q2.5 -1.5 5 0 M52 35 q2.5 -1.5 5 0" stroke="${hair}" stroke-width="1" fill="none"/>
+        <ellipse cx="45.5" cy="39" rx="1.4" ry="1.9" fill="#1f1008"/><ellipse cx="54.5" cy="39" rx="1.4" ry="1.9" fill="#1f1008"/>
+        <circle cx="45.9" cy="38.4" r=".5" fill="#fff"/><circle cx="54.9" cy="38.4" r=".5" fill="#fff"/>
+        <path d="M49.5 41 q.8 2.4 -.8 2.8" stroke="#0003" stroke-width=".8" fill="none"/>
+        ${beard ? `<path d="M39.5 40 Q40 54 50 55 Q60 54 60.5 40 Q58 47 50 48.5 Q42 47 39.5 40Z" fill="${hair}"/>` : ''}
+        ${female ? `<circle cx="43" cy="43.5" r="2" fill="#f08a8a" opacity=".35"/><circle cx="57" cy="43.5" r="2" fill="#f08a8a" opacity=".35"/>` : ''}
+        ${!female ? `<path d="M45 45.5 Q50 44 55 45.5" stroke="${hair}" stroke-width="1.6" fill="none"/>` : ''}
+        <path d="M46.5 47 Q50 49.5 53.5 47" stroke="#7a2a1a" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+      </g>`;
+
+  // arm: side 'L'|'R', shoulder x, sleeve colour & length, optional stick
+  const arm = (s, x, skin, sleeve, sleeveLen, stick) => `
+      <g class="arm ${s}" style="transform-origin:${x}px 62px">
+        <line x1="${x}" y1="62" x2="${x}" y2="84" stroke="${skin}" stroke-width="5.5" stroke-linecap="round"/>
+        <line x1="${x}" y1="61" x2="${x}" y2="${62 + Math.min(sleeveLen, 22)}" stroke="${sleeve}" stroke-width="7" stroke-linecap="round"/>
+        <g class="fore ${s}" style="transform-origin:${x}px 84px">
+          <line x1="${x}" y1="84" x2="${x}" y2="104" stroke="${skin}" stroke-width="5" stroke-linecap="round"/>
+          ${sleeveLen > 22 ? `<line x1="${x}" y1="83" x2="${x}" y2="${62 + sleeveLen}" stroke="${sleeve}" stroke-width="6.4" stroke-linecap="round"/>` : `
+          <line x1="${x - 3}" y1="99" x2="${x + 3}" y2="99" stroke="${GOLD}" stroke-width="1.6"/>
+          <line x1="${x - 3}" y1="101.5" x2="${x + 3}" y2="101.5" stroke="#d0213a" stroke-width="1.6"/>`}
+          <circle cx="${x}" cy="106" r="3.3" fill="${skin}"/>
+          ${stick ? `<line x1="${x}" y1="106" x2="${x}" y2="128" stroke="#5a3010" stroke-width="2" stroke-linecap="round"/>` : ''}
+        </g>
+      </g>`;
+
+  const woman = o => `
+    <ellipse class="shadow" cx="50" cy="228" rx="30" ry="4"/>
+    <g class="fig">
+      <ellipse cx="42" cy="226" rx="6" ry="3" fill="${o.skin}"/><ellipse cx="58" cy="226" rx="6" ry="3" fill="${o.skin}"/>
+      <g class="skirt" style="transform-origin:50px 100px">
+        <path d="M40 98 Q31 150 17 220 Q50 231 83 220 Q69 150 60 98Z" fill="${o.main}"/>
+        <path d="M50 100 Q60 160 83 220 Q68 226 60 227 Q58 160 50 100Z" fill="#0000001c"/>
+        <path d="M45 108 L36 224 M50 108 L50 228 M55 108 L64 224" stroke="${o.dark}" stroke-width="1" opacity=".45"/>
+        <path d="M17 220 Q50 231 83 220 L81.5 212 Q50 223 18.5 212Z" fill="${GOLD}"/>
+        <path d="M19 213 Q50 224 81 213" stroke="${o.dark}" stroke-width="1" fill="none" stroke-dasharray="2 2"/>
+      </g>
+      <g class="upper" style="transform-origin:50px 100px">
+        <path d="M42 80 L58 80 L59.5 101 L40.5 101Z" fill="${o.skin}"/>
+        <path d="M38 60 Q50 55 62 60 L60 82 Q50 85 40 82Z" fill="${o.blouse}"/>
+        ${face(o.skin, o.hair, true)}
+        <path d="M44 57 Q50 66 56 57" stroke="${GOLD}" stroke-width="2" fill="none"/>
+        <path d="M60 56 Q67 62 63 74 L44 103 L37 99 L54 72 Q57 64 54 58Z" fill="${o.pallu}"/>
+        <path d="M63 74 L44 103" stroke="${GOLD}" stroke-width="2"/>
+        ${arm('L', 39, o.skin, o.blouse, 8)}
+        ${arm('R', 61, o.skin, o.blouse, 8)}
+      </g>
+    </g>`;
+
+  const man = o => `
+    <ellipse class="shadow" cx="50" cy="228" rx="28" ry="4"/>
+    <g class="fig">
+      <path d="M39 150 L36 223 L48 223 L50 162 L52 223 L64 223 L61 150Z" fill="${o.pants}"/>
+      <path d="M50 162 L52 223 L58 223 Z" fill="#0000001a"/>
+      <ellipse cx="42" cy="225" rx="7" ry="3" fill="#7a3a12"/><ellipse cx="58" cy="225" rx="7" ry="3" fill="#7a3a12"/>
+      <g class="upper" style="transform-origin:50px 130px">
+        <path d="M37 60 Q50 55 63 60 L67 165 Q50 171 33 165Z" fill="${o.kurta}"/>
+        <path d="M50 60 L50 170 L67 165 L63 60Z" fill="#00000014"/>
+        ${o.vest ? `<path d="M38 62 L46 61 L48 112 L36 114Z M62 62 L54 61 L52 112 L64 114Z" fill="${o.vest}"/>` : ''}
+        <line x1="50" y1="58" x2="50" y2="92" stroke="${o.trim}" stroke-width="1.4"/>
+        <circle cx="50" cy="68" r="1" fill="${GOLD}"/><circle cx="50" cy="76" r="1" fill="${GOLD}"/><circle cx="50" cy="84" r="1" fill="${GOLD}"/>
+        <path d="M37 165 Q50 171 63 165" stroke="${o.trim}" stroke-width="2" fill="none"/>
+        ${face(o.skin, o.hair, false, o.beard)}
+        ${o.drum ? `
+          <line x1="62" y1="60" x2="34" y2="104" stroke="#6a3510" stroke-width="3"/>
+          <rect x="24" y="100" width="52" height="30" rx="5" fill="#8f3c18"/>
+          <path d="M30 101 L38 129 L46 101 L54 129 L62 101 L70 129" stroke="${GOLD}" stroke-width="1.4" fill="none"/>
+          <rect x="24" y="100" width="52" height="4" fill="#5a2208"/><rect x="24" y="126" width="52" height="4" fill="#5a2208"/>
+          <ellipse cx="24" cy="115" rx="6" ry="15" fill="#efdcb2" stroke="#5a2208" stroke-width="2"/>
+          <ellipse cx="76" cy="115" rx="6" ry="15" fill="#efdcb2" stroke="#5a2208" stroke-width="2"/>` : ''}
+        ${arm('L', 37, o.skin, o.kurta, 40, o.drum)}
+        ${arm('R', 63, o.skin, o.kurta, 40, o.drum)}
+      </g>
+    </g>`;
+
+  const S = ['#c98a5e', '#b67a4e', '#d9a173', '#a96d42'];
+  const H = '#1d0f07';
+  // back row first (drawn behind), then front row
+  const cast = [
+    {k:'man',   dance:'bhangra', x:4,  b:30, h:52, back:1, o:{kurta:'#e98a3c', pants:'#f3e7cf', trim:'#fbd27a', beard:0}},
+    {k:'woman', dance:'clap',    x:19, b:32, h:50, back:1, o:{main:'#e9732f', dark:'#9a3b10', blouse:'#c0262e', pallu:'#f2a23a'}},
+    {k:'man',   dance:'clap',    x:33, b:34, h:52, back:1, o:{kurta:'#f4ecd6', pants:'#f4ecd6', trim:'#d9b56a', beard:1}},
+    {k:'man',   dance:'clap',    x:51, b:34, h:52, back:1, o:{kurta:'#f4ecd6', pants:'#f4ecd6', trim:'#d9b56a', vest:'#c9a14a'}},
+    {k:'woman', dance:'clap',    x:65, b:32, h:50, back:1, o:{main:'#f0a52a', dark:'#9a6408', blouse:'#d4542b', pallu:'#e8782a'}},
+    {k:'man',   dance:'bhangra', x:79, b:30, h:52, back:1, o:{kurta:'#2f7f74', pants:'#f3e7cf', trim:'#9fd3c4', beard:1}},
+
+    {k:'man',   dance:'dhol',    x:-7, b:0, h:92, o:{kurta:'#3a5f86', pants:'#f3e7cf', trim:'#9bb7d6', beard:1, drum:1}},
+    {k:'woman', dance:'garba',   x:14, b:2, h:84, o:{main:'#13707b', dark:'#073e45', blouse:'#0e5560', pallu:'#1b8a96'}},
+    {k:'woman', dance:'garba',   x:36, b:5, h:80, o:{main:'#f2b01e', dark:'#a86a00', blouse:'#e3901a', pallu:'#f7c84a'}},
+    {k:'woman', dance:'garba',   x:57, b:2, h:84, o:{main:'#c7321f', dark:'#6e1208', blouse:'#9e1f14', pallu:'#e8742c'}},
+    {k:'man',   dance:'dhol',    x:77, b:0, h:92, o:{kurta:'#f1e6c8', pants:'#f1e6c8', trim:'#d3a04c', beard:1, vest:'#b88a3a', drum:1}},
   ];
-  people.forEach((p, i) => {
-    const c = outfits[i % outfits.length], skin = ['#c68a5c','#b97a4d','#d59a6a'][i % 3];
+  cast.forEach((c, i) => {
+    const o = {skin: S[i % S.length], hair: H, ...c.o};
     const el = document.createElement('div');
-    el.className = 'person';
-    el.style.cssText = `left:${p.x}%;width:14%;height:${p.h}%;animation-delay:${-i * .17}s;animation-duration:${.9 + (i % 3) * .15}s`;
-    el.innerHTML = `<svg viewBox="0 0 40 100" preserveAspectRatio="xMidYMax meet" style="width:100%;height:100%">
-      <path d="M20 30 L6 100 H34 Z" fill="${c}"/>
-      <path d="M20 30 L30 100 H34 L22 30Z" fill="#0002"/>
-      <path d="M14 34 Q4 46 ${i%2?2:8} ${i%2?30:58}" stroke="${skin}" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <path d="M26 34 Q36 46 ${i%2?38:32} ${i%2?58:28}" stroke="${skin}" stroke-width="4" fill="none" stroke-linecap="round"/>
-      <circle cx="20" cy="20" r="9" fill="${skin}"/>
-      <path d="M11 18 q9 -14 18 0 q-2 -8 -9 -8 q-7 0 -9 8z" fill="#2a160a"/>
-      ${p.drum ? `<ellipse cx="20" cy="60" rx="15" ry="9" fill="#a8582a" stroke="#f2c14e" stroke-width="2"/>
-                  <path d="M6 56 L34 64 M6 64 L34 56" stroke="#f2c14e" stroke-width="1"/>` : ''}
-    </svg>`;
+    el.className = `person ${c.dance}${c.back ? ' back' : ''}`;
+    const w = c.h * 0.36 * (100 / 232) * (16 / 9);   // figure aspect inside the 9:16 stage
+    el.style.cssText = `left:${c.x}%;bottom:${c.b}%;height:${c.h}%;width:${w}%;--off:${(-i * 0.37).toFixed(2)}s;` +
+      (c.dance === 'garba' ? `--beat:${1.5 + (i % 3) * .1}s;` : '');
+    el.innerHTML = `<svg viewBox="0 0 100 232" preserveAspectRatio="xMidYMax meet">${c.k === 'woman' ? woman(o) : man(o)}</svg>`;
     crowd.appendChild(el);
   });
 
